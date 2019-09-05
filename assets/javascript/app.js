@@ -21,8 +21,11 @@ function runTrivia() {
   for (index in trivia) {
     $('form').append($('<h1>').text(trivia[index].question));
     
-    trivia[index].answers.forEach( answer => $('form').append(`<input type="radio" name="answer" value="${answer}">${answer}`));
+    trivia[index].answers.forEach( (answer, jindex) =>
+      $('form').append(`<input type="radio" name="answer${index}" value="${jindex}">${answer}<br>`));
   }
+
+  
   $('form').append($('<button>').text('Submit'));
 
 
