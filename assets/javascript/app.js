@@ -40,7 +40,7 @@ function runTrivia() {
   intervalId = setInterval(count, 1000);
 
   function count() {
-    itimeLeft ? $('#timer').text(timeLeft--) : ready();
+    timeLeft ? $('#timer').text(timeLeft--) : ready();
   }
 
   function ready() {
