@@ -1,7 +1,6 @@
 const timeLimit = 5; // timeout in seconds
-let running = false;
-
-let trivia = [{
+let trivia = [
+  {
     question: 'Question 1',
     answers: ['answer 1', 'answer 2', 'answer 3'],
     correct: 2
@@ -13,50 +12,45 @@ let trivia = [{
   }
 ];
 
-$(document).ready(function () {
+$(document).ready(function() {
   $('#start').on('click', runTrivia);
+  $('#trivia').hide();
+  $('#results').hide();
 });
 
 function runTrivia() {
   let timeLeft = timeLimit;
   let intervalId;
 
-  if (!running) {
-    running = true;
-    $('#start').hide();
-    $('#results').hide();
-  
-    for (index in trivia) {
-      $('#trivia').append($("<h1>").text(trivia[index].question));
+  $('#start').hide();
+  $('#trivia').show();
+  $('#results').hide();
 
-      trivia[index].answers.forEach((answer, jindex) =>
-        $('#trivia').append(
-          `<input type="radio" name="answer${index}" value="${jindex}">${answer}<br>`
-        )
-      );
-    }
-    $('#trivia').append($('<button id="ready">').text('Submit'));
-
-    intervalId = setInterval(count, 1000);
-    $('#ready').on('click', ready);
-
+  for (index in trivia) {
+    $('form').append($('<h1>').text(trivia[index].question));
+    trivia[index].answers.forEach((answer, jindex) =>
+      $('form').append(
+        `<input type="radio" name="answer${index}" value="${jindex}">${answer}<br>`
+      )
+    );
   }
+  $('form').append($('<button id="ready">').text('Submit'));
+  $('form').submit(ready);
+
+  intervalId = setInterval(count, 1000);
 
   function count() {
-    if (timeLeft) {
-      $('#timer').text(timeLeft--);
-    } else {
-      stopCount();
-    }
+    itimeLeft ? $('#timer').text(timeLeft--) : ready();
   }
 
   function ready() {
-    stopCount();
-    alert('Ready');
-  }
-
-  function stopCount() {
+    let results = $('form').serializeArray();
+    if (event) event.preventDefault();
     clearInterval(intervalId);
-    running = false;
+    console.log(results);
+    $('#start').show();
+    $('form').empty();
+    // $('#trivia').hide();
+    $('#results').show();
   }
 }
