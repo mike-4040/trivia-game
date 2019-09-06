@@ -23,29 +23,40 @@ function runTrivia() {
 
   if (!running) {
     running = true;
-
     $('#start').hide();
-    $('#trivia').append('<form>');
+    $('#results').hide();
+  
     for (index in trivia) {
-      $('form').append($('<h1>').text(trivia[index].question));
+      $('#trivia').append($("<h1>").text(trivia[index].question));
 
       trivia[index].answers.forEach((answer, jindex) =>
-        $('form').append(
+        $('#trivia').append(
           `<input type="radio" name="answer${index}" value="${jindex}">${answer}<br>`
         )
       );
     }
-    $('form').append($('<button>').text('Submit'));
+    $('#trivia').append($('<button id="ready">').text('Submit'));
 
     intervalId = setInterval(count, 1000);
+    $('#ready').on('click', ready);
+
   }
 
   function count() {
     if (timeLeft) {
       $('#timer').text(timeLeft--);
     } else {
-      clearInterval(intervalId);
-      running = false;
+      stopCount();
     }
+  }
+
+  function ready() {
+    stopCount();
+    alert('Ready');
+  }
+
+  function stopCount() {
+    clearInterval(intervalId);
+    running = false;
   }
 }
