@@ -1,5 +1,7 @@
-let trivia = [
-  {
+const timeLimit = 5; // timeout in seconds
+let running = false;
+
+let trivia = [{
     question: 'Question 1',
     answers: ['answer 1', 'answer 2', 'answer 3'],
     correct: 2
@@ -11,22 +13,39 @@ let trivia = [
   }
 ];
 
-$(document).ready(function() {
+$(document).ready(function () {
   $('#start').on('click', runTrivia);
 });
 
 function runTrivia() {
-  $('#start').hide();
-  $('#trivia').append('<form>');
-  for (index in trivia) {
-    $('form').append($('<h1>').text(trivia[index].question));
-    
-    trivia[index].answers.forEach( (answer, jindex) =>
-      $('form').append(`<input type="radio" name="answer${index}" value="${jindex}">${answer}<br>`));
+  let timeLeft = timeLimit;
+  let intervalId;
+
+  if (!running) {
+    running = true;
+
+    $('#start').hide();
+    $('#trivia').append('<form>');
+    for (index in trivia) {
+      $('form').append($('<h1>').text(trivia[index].question));
+
+      trivia[index].answers.forEach((answer, jindex) =>
+        $('form').append(
+          `<input type="radio" name="answer${index}" value="${jindex}">${answer}<br>`
+        )
+      );
+    }
+    $('form').append($('<button>').text('Submit'));
+
+    intervalId = setInterval(count, 1000);
   }
 
-  
-  $('form').append($('<button>').text('Submit'));
-
-
+  function count() {
+    if (timeLeft) {
+      $('#timer').text(timeLeft--);
+    } else {
+      clearInterval(intervalId);
+      running = false;
+    }
+  }
 }
