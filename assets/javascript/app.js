@@ -30,26 +30,36 @@ function runTrivia() {
     $('form').append($('<h1>').text(trivia[index].question));
     trivia[index].answers.forEach((answer, jindex) =>
       $('form').append(
-        `<input type="radio" name="answer${index}" value="${jindex}">${answer}<br>`
+        `<input type="radio" name="${index}" value="${jindex}">${answer}<br>`
       )
     );
   }
   $('form').append($('<button id="ready">').text('Submit'));
-  $('form').submit(ready);
+  $('form').submit(checkAnswers);
 
   intervalId = setInterval(count, 1000);
 
   function count() {
-    timeLeft ? $('#timer').text(timeLeft--) : ready();
+    timeLeft ? $('#timer').text(timeLeft--) : checkAnswers();
   }
 
-  function ready() {
-    let results = $('form').serializeArray();
+  function checkAnswers() {
     if (event) event.preventDefault();
+    let results = $('form').serializeArray();
+    let correct = 0;
+    let incorrect = 0;
+    let notAnswered = 0;
     clearInterval(intervalId);
     console.log(results);
+    
+    for (let i = 0; i < 2; i++) {
+      let ans = results.find(answer => answer.name == i);
+      ans ? (trivia[i].correct == ans.value ? correct++ : incorrect++) : notAnswered++;
+      console.log(`Correct: ${correct}, Incorrect: ${incorrect}, Not Answerd: ${notAnswered}.`);
+    }
+    
     $('#start').show();
-    $('form').empty();
+    // $('form').empty();
     // $('#trivia').hide();
     $('#results').show();
   }

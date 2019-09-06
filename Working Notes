@@ -5,9 +5,9 @@ https://opentdb.com/ - seems like this will work
 
 Development steps:
 
-1. HTML (Dynamic).
-2. Event listeners.
-3. Get data
-4. Check answers
-5. Present resalts.
+1. + HTML (Dynamic)
+2. + Event listeners
+3. + Get data
+4. + Check answers
+5. Present results.
 6. Styling.
