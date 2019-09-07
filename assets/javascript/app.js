@@ -58,6 +58,11 @@ function runTrivia() {
       console.log(`Correct: ${correct}, Incorrect: ${incorrect}, Not Answerd: ${notAnswered}.`);
     }
     
+    $('#results').append($('<h1>').text('All Done!'));
+    $('#results').append($('<h2>').text(`Correct Answers: ${correct}`));
+    $('#results').append($('<h2>').text(`Incorrect Answers: ${incorrect}`));
+    $('#results').append($('<h2>').text(`Ananswerd: ${notAnswered}`));
+    
     $('#start').show();
     // $('form').empty();
     // $('#trivia').hide();
