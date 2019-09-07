@@ -1,11 +1,12 @@
 'use strict';
-const timeLimit = 10; // timeout in seconds
+const timeLimit = 30; // timeout in seconds
 
 $(document).ready(function () {
   $('#start').on('click', runTrivia);
   $('#trivia').hide();
   $('#results').hide();
   $('form').empty();
+  $('progress').attr('max', timeLimit);
 });
 
 function runTrivia() {
@@ -14,9 +15,11 @@ function runTrivia() {
   let timeLeft = timeLimit;
 
   $('#start').hide();
-  $('form').empty();
+  $('#results').hide();
   $('#trivia').show();
-  $('#results').empty();
+  $('form').empty();
+  $('#timer').text(timeLeft);
+  $('progress').attr('value', timeLeft);
 
   $.ajax({
     url: queryURL,
@@ -54,10 +57,12 @@ function runTrivia() {
               name: qIndex,
               value: aIndex,
               class: 'form-check-input',
-              id: '' + qIndex + aIndex}),
+              id: '' + qIndex + aIndex
+            }),
             $('<label>').attr({
               class: 'form-check-label',
-              for: '' + qIndex + aIndex})
+              for: '' + qIndex + aIndex
+            })
               .text(answer)
           )
         )
@@ -66,10 +71,10 @@ function runTrivia() {
       cardGroup.append(card);
     }
     $('form').append(cardGroup);
-    
+
     $('form')
-      .append($('<div>').attr({class: 'mx-auto', style: 'width: 200px;'})
-      .append($('<button>').attr({ id: 'ready', type: 'button', class: 'btn btn-primary my-2', style: 'width: 200px;' }).text('Ready')));
+      .append($('<div>').attr({ class: 'mx-auto', style: 'width: 200px;' })
+        .append($('<button>').attr({ id: 'ready', type: 'button', class: 'btn btn-primary my-2', style: 'width: 200px;' }).text('Ready')));
 
     $('#ready').on('click', checkAnswers);
 
@@ -89,12 +94,9 @@ function runTrivia() {
           : notAnswered++;
       }
 
-
-      $('#results').append(
-        $('<h2>').addClass('text-center mt-5').text('All Done!'),
-        $('<h3>').addClass('bg-success text-white mx-2').text(`Correct: ${correct}`),
-        $('<h3>').addClass('bg-danger text-white mx-2').text(`Incorrect: ${incorrect}`),
-        $('<h3>').addClass('bg-warning text-dark mx-2').text(`Unanswered: ${notAnswered}`));
+      $('#correct').text(correct);
+      $('#wrong').text(incorrect);
+      $('#not-answered').text(notAnswered);
 
       $('#start').show();
       $('#ready').hide();
@@ -102,7 +104,10 @@ function runTrivia() {
     }
 
     function count() {
-      timeLeft ? $('#timer').text(timeLeft--) : checkAnswers();
+      $('#timer').text(--timeLeft);
+      $('progress').attr('value', timeLeft);
+      if (timeLeft === 0)
+        checkAnswers();
     }
   });
 }

@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <div class="container border border-primary mt-2" style='background-image: url("./assets/images/background.jpg");'>
+  <div class="container mt-2" style='background-image: url("./assets/images/background.jpg");'>
     <div class="row">
       <div class="col-md-8">
         <div class="my-5 text-center display-3">Tottaly Trivial Trivia</div>
@@ -22,12 +22,17 @@
         </div>
       </div>
       <div class="col-md-4">
-        <div id="results" class="bg-light"></div>
-
+        <div id="results" class="bg-light my-5 px-2 py-3">
+          <h2 class="text-center">All Done!</h2>
+          <h4 class="bg-success text-white mx-2">Correct: <span id="correct"></span></h3>
+          <h4 class="bg-danger text-white mx-2">Incorrect: <span id="wrong"></span></h3>
+          <h4 class="bg-warning text-dark m-2">Unanswered: <span id="not-answered"></span></h3>
+        </div>
       </div>
     </div>
     <div id="trivia">
       <h2 class="text-center">Time Remaining: <span id="timer"></span></h2>
+      <progress max="100" value="100" style="width: 100%;"></progress>
       <form class="mb-2"></form>
     </div>
   </div>
