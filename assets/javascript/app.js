@@ -5,6 +5,7 @@ $(document).ready(function () {
   $('#start').on('click', runTrivia);
   $('#trivia').hide();
   $('#results').hide();
+  $('form').empty();
 });
 
 function runTrivia() {
@@ -13,8 +14,9 @@ function runTrivia() {
   let timeLeft = timeLimit;
 
   $('#start').hide();
+  $('form').empty();
   $('#trivia').show();
-  $('#results').hide();
+  $('#results').empty();
 
   $.ajax({
     url: queryURL,
@@ -36,35 +38,40 @@ function runTrivia() {
       });
     }
 
+    let cardGroup = $('<div>').addClass('card-group');
+
     for (let qIndex in trivia) {
       let card = $('<div>').addClass('card');
       card.append($('<div>').addClass('card-header').text(trivia[qIndex].question));
 
-      let body = $('<div>').addClass('card-body')
+      let cardBody = $('<div>').addClass('card-body')
 
-        trivia[qIndex].answers.forEach((answer, aIndex) =>
-        body.append(
-          `<input type="radio" name="${qIndex}" value="${aIndex}" class="mx-2">${answer}`
+      trivia[qIndex].answers.forEach((answer, aIndex) =>
+        cardBody.append(
+          $('<div>').addClass('form-check').append(
+            $('<input>').attr({
+              type: 'radio',
+              name: qIndex,
+              value: aIndex,
+              class: 'form-check-input',
+              id: '' + qIndex + aIndex}),
+            $('<label>').attr({
+              class: 'form-check-label',
+              for: '' + qIndex + aIndex})
+              .text(answer)
+          )
         )
-      );
-      card.append(body);
-  
-
-      // $('form').append(card).append($('<h2>').text(trivia[qIndex].question));
-      // $('form').append(card)
-
-      // trivia[qIndex].answers.forEach((answer, aIndex) =>
-      //   $('form').append(
-      //     `<input type="radio" name="${qIndex}" value="${aIndex}">${answer}`
-      //   )
-      // );
-      $('form').append(card)
+      )
+      card.append(cardBody);
+      cardGroup.append(card);
     }
-
-
+    $('form').append(cardGroup);
     
-    $('form').append($('<button id="ready">').text('Submit'));
-    $('form').submit(checkAnswers);
+    $('form')
+      .append($('<div>').attr({class: 'mx-auto', style: 'width: 200px;'})
+      .append($('<button>').attr({ id: 'ready', type: 'button', class: 'btn btn-primary my-2', style: 'width: 200px;' }).text('Ready')));
+
+    $('#ready').on('click', checkAnswers);
 
     function checkAnswers() {
       if (event) event.preventDefault();
@@ -82,14 +89,15 @@ function runTrivia() {
           : notAnswered++;
       }
 
-      $('#results').append($('<h1>').text('All Done!'));
-      $('#results').append($('<h2>').text(`Correct Answers: ${correct}`));
-      $('#results').append($('<h2>').text(`Incorrect Answers: ${incorrect}`));
-      $('#results').append($('<h2>').text(`Ananswerd: ${notAnswered}`));
+
+      $('#results').append(
+        $('<h2>').addClass('text-center mt-5').text('All Done!'),
+        $('<h3>').addClass('bg-success text-white mx-2').text(`Correct: ${correct}`),
+        $('<h3>').addClass('bg-danger text-white mx-2').text(`Incorrect: ${incorrect}`),
+        $('<h3>').addClass('bg-warning text-dark mx-2').text(`Unanswered: ${notAnswered}`));
 
       $('#start').show();
-      // $('form').empty();
-      // $('#trivia').hide();
+      $('#ready').hide();
       $('#results').show();
     }
 
