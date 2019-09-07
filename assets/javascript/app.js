@@ -37,13 +37,32 @@ function runTrivia() {
     }
 
     for (let qIndex in trivia) {
-      $('form').append($('<h1>').text(trivia[qIndex].question));
-      trivia[qIndex].answers.forEach((answer, aIndex) =>
-        $('form').append(
-          `<input type="radio" name="${qIndex}" value="${aIndex}">${answer}<br>`
+      let card = $('<div>').addClass('card');
+      card.append($('<div>').addClass('card-header').text(trivia[qIndex].question));
+
+      let body = $('<div>').addClass('card-body')
+
+        trivia[qIndex].answers.forEach((answer, aIndex) =>
+        body.append(
+          `<input type="radio" name="${qIndex}" value="${aIndex}" class="mx-2">${answer}`
         )
       );
+      card.append(body);
+  
+
+      // $('form').append(card).append($('<h2>').text(trivia[qIndex].question));
+      // $('form').append(card)
+
+      // trivia[qIndex].answers.forEach((answer, aIndex) =>
+      //   $('form').append(
+      //     `<input type="radio" name="${qIndex}" value="${aIndex}">${answer}`
+      //   )
+      // );
+      $('form').append(card)
     }
+
+
+    
     $('form').append($('<button id="ready">').text('Submit'));
     $('form').submit(checkAnswers);
 
