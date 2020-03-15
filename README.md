@@ -1,5 +1,4 @@
 # Trivia Game
-UCSD CodeCamp Homework
 
 ## Motivation
 To learn how to use JavaScript for the logic and jQuery to manipulate HTML and to perform simple API requests.
